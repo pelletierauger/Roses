@@ -1,12 +1,13 @@
 var canvas;
 var ctx;
-var r, a, n, theta, x, y;
+var r, a, k, theta, x, y;
 var al, sc;
 var drawCount = 0;
 var osc = 0;
 var looping = true;
 var exporting = false;
 var interface;
+var docs;
 var cols = [{
     offset: 0,
     r: 255,
@@ -38,7 +39,7 @@ function setup() {
     // noLoop();
     // stroke(155, 100, 100);
     fill(170, 200, 90, 150);
-    n = 1;
+    k = 4;
     a = 250;
     if (!looping) {
         noLoop();
@@ -50,8 +51,8 @@ function createSmallInterface() {
     interface = createDiv('');
     interface.style('position', 'absolute');
     interface.style('width', '325px');
-    interface.style('bottom', '2.5em');
-    interface.style('padding', '10px 10px 0px 10px');
+    interface.style('bottom', '0em');
+    interface.style('padding', '10px 10px 10px 10px');
     interface.style('opacity', '1');
     interface.style('background-color', 'rgba(65, 65, 65, 0.5)');
     interface.style('font-family', 'Inconsolata', 'Helvetica', 'Arial');
@@ -63,12 +64,19 @@ function createSmallInterface() {
 }
 
 function configureInterface() {
-    sliders.n = new Slider("n", 0, 150, 1, 1, interface);
-    sliders.d = new Slider("d", 0, 150, 1, 1, interface);
+    var docsString = "Ceci est une documentation exhaustive et sérieuses.";
+    docs = createP(docsString);
+    docs.parent(interface);
+    sliders.n = new Slider("n", 1, 30, 4, 1, interface);
+    sliders.d = new Slider("d", 1, 30, 1, 1, interface);
 
 }
 
 function draw() {
+    var n = sliders.n.value;
+    var d = sliders.d.value;
+    k = n / d;
+    docs.html("k = " + n + " / " + d + " = " + round(k * 10000) / 10000);
 
     var magicValue = sin(2 / 100) - sin(1 / 100);
     // background(240, 240, 190);
@@ -113,7 +121,7 @@ function draw() {
 
     printBackgroundGradient();
 
-    var magicRotate2 = map(cos(frameCount / 50), -1, 1, 0, TWO_PI / n / 2);
+    var magicRotate2 = map(cos(frameCount / 50), -1, 1, 0, TWO_PI / k / 2);
     rotate(-magicRotate2);
 
     var noi = noise(frameCount / 100) * 280;
@@ -124,7 +132,7 @@ function draw() {
         push();
         // rotate(drawCount * (frameCount * magicValue));
         // rotate(TWO_PI);
-        var magicRotate = map(cos(frameCount / 50), -1, 1, 0, TWO_PI / n / 2);
+        var magicRotate = map(cos(frameCount / 50), -1, 1, 0, TWO_PI / k / 2);
         rotate(-magicRotate * drawCount);
 
         al = map(10 - (drawCount / 2), 10, 0, 155, 0);
@@ -159,9 +167,9 @@ function draw() {
         var total = 500;
         var num = TWO_PI / total;
         beginShape();
-        for (var i = 0; i < TWO_PI * 1; i += num) {
+        for (var i = 0; i < TWO_PI; i += num) {
             theta = i;
-            r = a * sin(n * theta);
+            r = a * sin(k * theta);
             x = r * cos(theta);
             y = r * sin(theta);
             // ellipse(x, y, 1, 1);
