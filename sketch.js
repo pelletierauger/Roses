@@ -6,6 +6,7 @@ var drawCount = 0;
 var osc = 0;
 var looping = true;
 var exporting = false;
+var interface;
 var cols = [{
     offset: 0,
     r: 255,
@@ -27,6 +28,10 @@ function setup() {
     canvas = createCanvas(550, 550);
     // canvas = createCanvas(min(windowHeight * 16 / 9, min(1440, windowWidth)), min(windowHeight, min(1440, windowWidth) * 9 / 16));
     ctx = canvas.drawingContext;
+    // createInterface(0, 0, 0);
+
+    createSmallInterface();
+    configureInterface();
     background(240, 240, 190);
     noStroke();
     scale(0.1, 0.1);
@@ -40,7 +45,31 @@ function setup() {
     }
 }
 
+
+function createSmallInterface() {
+    interface = createDiv('');
+    interface.style('position', 'absolute');
+    interface.style('width', '325px');
+    interface.style('bottom', '2.5em');
+    interface.style('padding', '10px 10px 0px 10px');
+    interface.style('opacity', '1');
+    interface.style('background-color', 'rgba(65, 65, 65, 0.5)');
+    interface.style('font-family', 'Inconsolata', 'Helvetica', 'Arial');
+    // interface.style('line-height', '0.75em');
+    var calculateHeight = windowHeight - 50;
+    interface.style("max-height", calculateHeight + "px");
+    interface.style("overflow", "auto");
+    interface.style('color', 'rgba(255, 255, 255, 0.5');
+}
+
+function configureInterface() {
+    sliders.n = new Slider("n", 0, 150, 1, 1, interface);
+    sliders.d = new Slider("d", 0, 150, 1, 1, interface);
+
+}
+
 function draw() {
+
     var magicValue = sin(2 / 100) - sin(1 / 100);
     // background(240, 240, 190);
     // background(0);
