@@ -1,0 +1,3 @@
+[submodule "p5.tools"]
+	path = p5.tools
+	url = https://github.com/pelletierauger/p5.tools.git
